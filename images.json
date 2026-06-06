@@ -6,10 +6,10 @@
       "title": "Personajes (Character Sheets)",
       "description": "Diseños de personajes en estilo pencil + watercolor",
       "images": [
-        {"id": "abe", "file": "abe.png", "alt": "Abe - Personaje principal", "status": "pending"},
-        {"id": "tio", "file": "tio_agustin.png", "alt": "Tío Agustín - El mentor", "status": "pending"},
-        {"id": "margarita", "file": "margarita.png", "alt": "Margarita - Amiga de Abe", "status": "pending"},
-        {"id": "policia", "file": "policia_v2.png", "alt": "Policía - Personaje secundario", "status": "pending"}
+        {"id": "abe", "file": "abe.jpg", "alt": "Abe - Personaje principal", "status": "pending"},
+        {"id": "tio", "file": "tio_agustin.jpg", "alt": "Tío Agustín - El mentor", "status": "pending"},
+        {"id": "margarita", "file": "margarita.jpg", "alt": "Margarita - Amiga de Abe", "status": "pending"},
+        {"id": "policia", "file": "policia_v2.jpg", "alt": "Policía - Personaje secundario", "status": "pending"}
       ]
     },
     {
@@ -17,7 +17,7 @@
       "title": "Locaciones",
       "description": "Escenarios donde transcurre la historia",
       "images": [
-        {"id": "estudio", "file": "Estudio.png", "alt": "Estudio / Biblioteca del Tío", "status": "pending"}
+        {"id": "estudio", "file": "Estudio.jpg", "alt": "Estudio / Biblioteca del Tío", "status": "pending"}
       ]
     },
     {
@@ -37,8 +37,8 @@
       "title": "Escena 3: El Tío",
       "description": "Estudio, disciplina, 140 mil copias",
       "images": [
-        {"id": "abe_studying", "file": "AbeStuding.png", "alt": "Abe estudiando en el estudio", "status": "pending"},
-        {"id": "tio_telling", "file": "TioTellingAbe.png", "alt": "Tío regaña a Abe", "status": "pending"}
+        {"id": "abe_studying", "file": "AbeStuding.jpg", "alt": "Abe estudiando en el estudio", "status": "pending"},
+        {"id": "tio_telling", "file": "TioTellingAbe.jpg", "alt": "Tío regaña a Abe", "status": "pending"}
       ]
     },
     {
