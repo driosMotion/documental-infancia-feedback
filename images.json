@@ -1,0 +1,63 @@
+{
+  "project": "Documental Infancia",
+  "scenes": [
+    {
+      "id": "chars",
+      "title": "Personajes (Character Sheets)",
+      "description": "Diseños de personajes en estilo pencil + watercolor",
+      "images": [
+        {"id": "abe", "file": "abe.png", "alt": "Abe - Personaje principal", "status": "pending"},
+        {"id": "tio", "file": "tio_agustin.png", "alt": "Tío Agustín - El mentor", "status": "pending"},
+        {"id": "margarita", "file": "margarita.png", "alt": "Margarita - Amiga de Abe", "status": "pending"},
+        {"id": "policia", "file": "policia_v2.png", "alt": "Policía - Personaje secundario", "status": "pending"}
+      ]
+    },
+    {
+      "id": "loc",
+      "title": "Locaciones",
+      "description": "Escenarios donde transcurre la historia",
+      "images": [
+        {"id": "estudio", "file": "Estudio.png", "alt": "Estudio / Biblioteca del Tío", "status": "pending"}
+      ]
+    },
+    {
+      "id": "escena1",
+      "title": "Escena 1: El Origen",
+      "description": "La semilla, el banco de la plaza, la casa con luz",
+      "images": []
+    },
+    {
+      "id": "escena2",
+      "title": "Escena 2: La Calle",
+      "description": "Piano → calle, dormir en umbral, siluetas de criminales",
+      "images": []
+    },
+    {
+      "id": "escena3",
+      "title": "Escena 3: El Tío",
+      "description": "Estudio, disciplina, 140 mil copias",
+      "images": [
+        {"id": "abe_studying", "file": "AbeStuding.png", "alt": "Abe estudiando en el estudio", "status": "pending"},
+        {"id": "tio_telling", "file": "TioTellingAbe.png", "alt": "Tío regaña a Abe", "status": "pending"}
+      ]
+    },
+    {
+      "id": "escena4",
+      "title": "Escena 4: La Fractura",
+      "description": "Tío solo de noche, diamante en bruto, flashback",
+      "images": []
+    },
+    {
+      "id": "escena5",
+      "title": "Escena 5: Margarita",
+      "description": "Encuentro, mantel, policía, huida",
+      "images": []
+    },
+    {
+      "id": "escena6",
+      "title": "Escena 6: Todo Vuelve",
+      "description": "Reflexión final, péndulo, flor",
+      "images": []
+    }
+  ]
+}

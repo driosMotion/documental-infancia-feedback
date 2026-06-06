@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Documental Infancia — Galería de Feedback</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #222240;
+      --surface2: #2a2a50;
+      --text: #eee;
+      --text-muted: #999;
+      --green: #4caf50;
+      --red: #e53935;
+      --amber: #ffb300;
+      --blue: #42a5f5;
+      --border: #333;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+
+    /* Scene sections */
+    .scene { margin-bottom: 32px; }
+    .scene-header {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .scene-header h2 { font-size: 16px; }
+    .scene-header .desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .scene-header .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--surface2);
+    }
+    .scene-header .badge.done { background: var(--green); color: #fff; }
+    .scene-content { display: none; flex-wrap: wrap; gap: 16px; }
+    .scene-content.open { display: flex; }
+
+    /* Image cards */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      width: 100%;
+      max-width: 400px;
+      border: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .card.approved { border-color: var(--green); }
+    .card.rejected { border-color: var(--red); }
+    .card.changes { border-color: var(--amber); }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #333;
+      min-height: 100px;
+      object-fit: contain;
+    }
+    .card-body { padding: 10px 12px 14px; }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+
+    /* Action buttons */
+    .actions { display: flex; gap: 6px; margin-bottom: 8px; }
+    .actions button {
+      flex: 1;
+      padding: 8px 4px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .actions button:hover { filter: brightness(1.3); }
+    .actions button.approve.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .actions button.reject.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .actions button.changes.active { background: var(--amber); border-color: var(--amber); color: #000; }
+
+    .feedback-text {
+      width: 100%;
+      min-height: 60px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 13px;
+      resize: vertical;
+      display: none;
+      font-family: inherit;
+    }
+    .feedback-text.show { display: block; }
+    .feedback-text:focus { outline: none; border-color: var(--blue); }
+
+    /* Submit button */
+    .submit-area {
+      position: sticky;
+      bottom: 0;
+      background: var(--bg);
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .submit-btn:disabled { opacity: 0.5; cursor: default; }
+    .submit-btn:hover:not(:disabled) { filter: brightness(1.1); }
+
+    .status-msg {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .status-msg.success { color: var(--green); }
+    .status-msg.error { color: var(--red); }
+
+    /* Empty state */
+    .empty-state {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      width: 100%;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--surface2);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      body { padding: 24px; max-width: 900px; margin: 0 auto; }
+      .scene-content { flex-direction: row; flex-wrap: wrap; }
+      .card { max-width: calc(50% - 8px); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎬 Documental Infancia</h1>
+  <p class="subtitle">Galería de escenas — Aprobá, rechazá o pedí cambios</p>
+
+  <div id="app">
+    <div class="loading">
+      <div class="spinner"></div>
+      Cargando imágenes...
+    </div>
+  </div>
+
+  <div class="submit-area" id="submitArea" style="display:none">
+    <button class="submit-btn" id="submitBtn" disabled onclick="submitFeedback()">
+      📤 Enviar Feedback
+    </button>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <script>
+    // ── Config ──
+    const FEEDBACK_API = 'http://192.168.1.35:8765/api/feedback';
+    const IMG_BASE = window.location.hostname === '192.168.1.35'
+      ? '/images'
+      : 'https://driosmotion.github.io/documental-infancia-feedback/images';
+
+    let data = null;
+    let feedback = {}; // { imageId: { action: 'approve'|'reject'|'changes', text: '...' } }
+
+    // ── Load manifest ──
+    async function load() {
+      try {
+        const resp = await fetch('images.json');
+        data = await resp.json();
+        render();
+      } catch (e) {
+        document.getElementById('app').innerHTML = `
+          <div class="empty-state">
+            ❌ Error cargando imágenes: ${e.message}
+          </div>`;
+      }
+    }
+
+    // ── Render gallery ──
+    function render() {
+      const app = document.getElementById('app');
+      let html = '';
+
+      for (const scene of data.scenes) {
+        const imageCards = scene.images.map(img => renderCard(scene.id, img)).join('');
+        const hasImages = scene.images.length > 0;
+        const decided = scene.images.filter(i => feedback[i.id]).length;
+        const badge = hasImages
+          ? `<span class="badge ${decided === scene.images.length ? 'done' : ''}">${decided}/${scene.images.length}</span>`
+          : '';
+
+        html += `
+          <div class="scene">
+            <div class="scene-header" onclick="toggleScene(event)">
+              <div>
+                <h2>${scene.title}</h2>
+                ${scene.description ? `<div class="desc">${scene.description}</div>` : ''}
+              </div>
+              ${badge}
+            </div>
+            <div class="scene-content" data-scene="${scene.id}">
+              ${imageCards || '<div class="empty-state">📭 Aún no hay imágenes para esta escena</div>'}
+            </div>
+          </div>`;
+      }
+
+      app.innerHTML = html;
+      document.getElementById('submitArea').style.display = 'block';
+
+      // Load saved feedback from localStorage
+      loadLocal();
+    }
+
+    function renderCard(sceneId, img) {
+      const imgUrl = `${IMG_BASE}/${img.file}`;
+      const fb = feedback[img.id] || {};
+      const statusClass = fb.action === 'approve' ? 'approved'
+        : fb.action === 'reject' ? 'rejected'
+        : fb.action === 'changes' ? 'changes' : '';
+
+      return `
+        <div class="card ${statusClass}" data-id="${img.id}">
+          <img src="${imgUrl}" alt="${img.alt}" loading="lazy"
+               onerror="this.parentElement.innerHTML+='<div class=empty-state>⚠️ Imagen no encontrada</div>';this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">${img.alt}</div>
+            <div class="actions" data-id="${img.id}">
+              <button class="approve ${fb.action === 'approve' ? 'active' : ''}" onclick="setAction('${img.id}','approve')">✅ Aprobar</button>
+              <button class="changes ${fb.action === 'changes' ? 'active' : ''}" onclick="setAction('${img.id}','changes')">✏️ Cambios</button>
+              <button class="reject ${fb.action === 'reject' ? 'active' : ''}" onclick="setAction('${img.id}','reject')">❌ Rechazar</button>
+            </div>
+            <textarea class="feedback-text ${fb.action === 'changes' || fb.action === 'reject' ? 'show' : ''}"
+                      placeholder="¿Qué cambiarías? (opcional)"
+                      data-id="${img.id}"
+                      oninput="updateText(event)">${fb.text || ''}</textarea>
+          </div>
+        </div>`;
+    }
+
+    // ── Actions ──
+    function setAction(id, action) {
+      if (feedback[id] && feedback[id].action === action) {
+        delete feedback[id];
+      } else {
+        feedback[id] = { action, text: feedback[id]?.text || '' };
+      }
+      saveLocal();
+      updateSubmitBtn();
+      // Re-render just this card
+      const card = document.querySelector(`.card[data-id="${id}"]`);
+      if (card) {
+        const scene = card.closest('.scene');
+        const sceneId = scene.querySelector('.scene-content').dataset.scene;
+        const sc = data.scenes.find(s => s.id === sceneId);
+        if (sc) {
+          const img = sc.images.find(i => i.id === id);
+          if (img) {
+            card.outerHTML = renderCard(sceneId, img);
+          }
+        }
+      }
+      // Update badge
+      updateBadge(sceneId);
+    }
+
+    function updateText(ev) {
+      const id = ev.target.dataset.id;
+      if (feedback[id]) feedback[id].text = ev.target.value;
+      saveLocal();
+      updateSubmitBtn();
+    }
+
+    function toggleScene(ev) {
+      const content = ev.currentTarget.nextElementSibling;
+      content.classList.toggle('open');
+    }
+
+    // Open all scenes by default
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.scene-content').forEach(el => el.classList.add('open'));
+      }, 100);
+    });
+
+    // ── Feedback submit ──
+    async function submitFeedback() {
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('statusMsg');
+      btn.disabled = true;
+      msg.textContent = 'Enviando feedback...';
+      msg.className = 'status-msg';
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        feedback: Object.entries(feedback).map(([id, fb]) => {
+          const img = findImage(id);
+          return {
+            imageId: id,
+            title: img?.alt || id,
+            action: fb.action,
+            text: fb.text
+          };
+        })
+      };
+
+      // Try local server first
+      try {
+        const resp = await fetch(FEEDBACK_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const result = await resp.json();
+        msg.textContent = `✅ Feedback recibido! (${payload.feedback.length} imágenes)`;
+        msg.className = 'status-msg success';
+      } catch (e) {
+        // Fallback: save to localStorage + show copyable summary
+        localStorage.setItem('pendingFeedback', JSON.stringify(payload));
+        const summary = buildSummary(payload);
+        msg.innerHTML = `
+          ⚠️ No se pudo enviar al servidor local.
+          <br>Copiá este resumen y pegalo en el chat de Telegram:
+          <br><textarea readonly style="width:100%;min-height:80px;margin-top:8px;padding:8px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;font-size:12px">${summary}</textarea>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='✅ Copiado!'" style="margin-top:4px;padding:6px 16px;border-radius:8px;background:#42a5f5;color:#fff;border:none;cursor:pointer">📋 Copiar</button>
+        `;
+        msg.className = 'status-msg error';
+      }
+      btn.disabled = false;
+    }
+
+    function buildSummary(payload) {
+      let s = `📋 Feedback Documental Infancia (${payload.timestamp})\n\n`;
+      for (const fb of payload.feedback) {
+        const icon = fb.action === 'approve' ? '✅' : fb.action === 'reject' ? '❌' : '✏️';
+        s += `${icon} **${fb.title}** → ${fb.action.toUpperCase()}\n`;
+        if (fb.text) s += `   \`${fb.text}\`\n`;
+        s += '\n';
+      }
+      return s;
+    }
+
+    // ── Helpers ──
+    function findImage(id) {
+      for (const s of (data?.scenes || [])) {
+        for (const i of s.images) {
+          if (i.id === id) return i;
+        }
+      }
+      return null;
+    }
+
+    function updateSubmitBtn() {
+      const count = Object.keys(feedback).length;
+      document.getElementById('submitBtn').textContent =
+        count > 0 ? `📤 Enviar Feedback (${count} imágenes)` : '📤 Enviar Feedback';
+      document.getElementById('submitBtn').disabled = count === 0;
+    }
+
+    function updateBadge(sceneId) {
+      // Will be refreshed on next scene render
+    }
+
+    // ── localStorage persistence ──
+    function saveLocal() {
+      try { localStorage.setItem('infanciaFeedback', JSON.stringify(feedback)); } catch(e) {}
+    }
+    function loadLocal() {
+      try {
+        const saved = localStorage.getItem('infanciaFeedback');
+        if (saved) {
+          feedback = JSON.parse(saved);
+          updateSubmitBtn();
+        }
+      } catch(e) {}
+    }
+
+    // ── Kick off ──
+    load();
+  </script>
+</body>
+</html>
