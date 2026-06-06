@@ -19,10 +19,10 @@
       "description": "Escenarios donde transcurre la historia",
       "images": [
         {"id": "estudio", "file": "Estudio.jpg", "alt": "Estudio / Biblioteca del Tío", "status": "approved"},
-        {"id": "calle_noche", "file": "calle_noche.jpg", "alt": "Calle nocturna - Donde Abe vivió en la calle", "status": "pending"},
-        {"id": "casa_tio_exterior", "file": "casa_tio_exterior.jpg", "alt": "Casa del Tío - Exterior con luz en la ventana", "status": "pending"},
-        {"id": "plaza_banco", "file": "plaza_banco.jpg", "alt": "Banco de la Plaza - El origen", "status": "pending"},
-        {"id": "umbral_puerta", "file": "umbral_puerta.jpg", "alt": "El umbral - Donde durmió en la calle", "status": "pending"}
+        {"id": "calle_noche", "file": "calle_noche.jpg", "alt": "Calle nocturna - Donde Abe vivió en la calle", "status": "approved"},
+        {"id": "casa_tio_exterior", "file": "casa_tio_exterior.jpg", "alt": "Casa del Tío - Exterior con luz en la ventana", "status": "approved"},
+        {"id": "plaza_banco", "file": "plaza_banco.jpg", "alt": "Banco de la Plaza - El origen", "status": "approved"},
+        {"id": "umbral_puerta", "file": "umbral_puerta.jpg", "alt": "El umbral - Donde durmió en la calle", "status": "approved"}
       ]
     },
     {
