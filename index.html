@@ -175,33 +175,77 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.92);
+      background: rgba(0,0,0,0.95);
       z-index: 9999;
       justify-content: center;
       align-items: center;
       cursor: zoom-out;
+      animation: fadeIn 0.2s ease;
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .lightbox.open { display: flex; }
+    .lightbox .lb-img-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
     .lightbox img {
       max-width: 95vw;
       max-height: 95vh;
       object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      border-radius: 6px;
+      transition: transform 0.3s ease, max-width 0.3s ease, max-height 0.3s ease;
+      cursor: zoom-in;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    .lightbox img.zoomed {
+      max-width: 300vw;
+      max-height: 300vh;
+      cursor: zoom-out;
+      transform: scale(1);
     }
     .lightbox .close-btn {
       position: absolute;
-      top: 16px;
-      right: 20px;
-      font-size: 32px;
+      top: 12px;
+      right: 16px;
+      font-size: 30px;
       color: #fff;
-      background: none;
+      background: rgba(0,0,0,0.4);
       border: none;
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      opacity: 0.7;
-      z-index: 10000;
+      z-index: 10001;
+      opacity: 0.8;
+      line-height: 1;
     }
-    .lightbox .close-btn:hover { opacity: 1; }
+    .lightbox .close-btn:hover { opacity: 1; background: rgba(0,0,0,0.7); }
+    .lightbox .lb-caption {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ccc;
+      font-size: 13px;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 14px;
+      border-radius: 20px;
+      max-width: 80%;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+    .card img { cursor: pointer; }
 
     /* Responsive */
     @media (min-width: 768px) {
@@ -232,8 +276,11 @@
 
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="close-btn" onclick="closeLightbox()">✕</button>
-    <img id="lightboxImg" src="" alt="Vista ampliada">
+    <button class="close-btn" id="lbCloseBtn">✕</button>
+    <div class="lb-img-wrap" id="lbImgWrap">
+      <img id="lightboxImg" src="" alt="Vista ampliada">
+    </div>
+    <div class="lb-caption" id="lbCaption"></div>
   </div>
 
   <script>
@@ -307,7 +354,7 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
 
       return `
         <div class="card ${statusClass}" data-id="${img.id}">
-          <img src="${imgUrl}" alt="${img.alt}" loading="lazy" onclick="openLightbox('${imgUrl}')"
+          <img src="${imgUrl}" alt="${img.alt}" loading="lazy" data-lb-src="${imgUrl}"
                onerror="this.parentElement.innerHTML+='<div class=empty-state>⚠️ Imagen no encontrada</div>';this.style.display='none'">
           <div class="card-body">
             <div class="card-title">${img.alt}</div>
@@ -426,22 +473,56 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
     }
 
     // ── Lightbox ──
-    function openLightbox(src) {
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightbox').classList.add('open');
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbCaption = document.getElementById('lbCaption');
+    const lbClose = document.getElementById('lbCloseBtn');
+
+    function openLightbox(src, caption) {
+      lbImg.className = '';        // reset zoom
+      lbImg.src = src;
+      lbCaption.textContent = caption || '';
+      lb.classList.add('open');
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
     }
+
     function closeLightbox(ev) {
-      // Only close if clicking the overlay background or the X button
-      if (!ev || ev.target === document.getElementById('lightbox') || ev.target.tagName === 'BUTTON') {
-        document.getElementById('lightbox').classList.remove('open');
-        document.getElementById('lightboxImg').src = '';
+      // Close if: no event (direct call), clicking overlay bg, or close button
+      if (!ev || ev.target === lb || ev.target === lbClose || ev.target === lbImgWrap) {
+        lb.classList.remove('open');
+        lbImg.className = '';
+        lbImg.src = '';
+        lbCaption.textContent = '';
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
       }
     }
-    // Close on Escape key
+
+    // Tap image to toggle zoom
+    lbImg.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('zoomed');
+    });
+
+    // Close on Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Prevent accidental zoom-out gesture on the image
+    lbImg.addEventListener('touchstart', function(e) {
+      // Let click handle it
+    }, { passive: true });
+
+    // Fix: use data attribute instead of inline onclick to avoid URL escaping
+    document.addEventListener('click', function(e) {
+      const img = e.target.closest('.card img');
+      if (img && img.dataset.lbSrc) {
+        openLightbox(img.dataset.lbSrc, img.alt);
+      }
     });
 
     // ── Helpers ──
