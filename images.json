@@ -9,7 +9,8 @@
         {"id": "abe", "file": "abe.jpg", "alt": "Abe - Personaje principal", "status": "approved"},
         {"id": "tio", "file": "tio_agustin.jpg", "alt": "Tío Agustín - El mentor", "status": "approved"},
         {"id": "margarita", "file": "margarita.jpg", "alt": "Margarita - Amiga de Abe", "status": "approved"},
-        {"id": "policia", "file": "policia_v2.jpg", "alt": "Policía - Personaje secundario", "status": "approved"}
+        {"id": "policia", "file": "policia_v2.jpg", "alt": "Policía - Personaje secundario", "status": "approved"},
+        {"id": "abe_street", "file": "abe_street.jpg", "alt": "Abe Callejero - Version de la calle con gorra", "status": "pending"}
       ]
     },
     {
