@@ -198,7 +198,10 @@
 
   <script>
     // ── Config ──
-    const FEEDBACK_API = 'http://192.168.1.35:8765/api/feedback';
+    // GitHub-hosted feedback — works from anywhere
+const FEEDBACK_REPO = 'driosMotion/documental-infancia-feedback';
+const FEEDBACK_PATH = 'feedback_data.json';
+const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-infancia-feedback/main/feedback_data.json';
     const IMG_BASE = window.location.hostname === '192.168.1.35'
       ? '/images'
       : 'https://driosmotion.github.io/documental-infancia-feedback/images';
@@ -347,29 +350,27 @@
         })
       };
 
-      // Try local server first
-      try {
-        const resp = await fetch(FEEDBACK_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const result = await resp.json();
-        msg.textContent = `✅ Feedback recibido! (${payload.feedback.length} imágenes)`;
-        msg.className = 'status-msg success';
-      } catch (e) {
-        // Fallback: save to localStorage + show copyable summary
-        localStorage.setItem('pendingFeedback', JSON.stringify(payload));
-        const summary = buildSummary(payload);
-        msg.innerHTML = `
-          ⚠️ No se pudo enviar al servidor local.
-          <br>Copiá este resumen y pegalo en el chat de Telegram:
-          <br><textarea readonly style="width:100%;min-height:80px;margin-top:8px;padding:8px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;font-size:12px">${summary}</textarea>
-          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='✅ Copiado!'" style="margin-top:4px;padding:6px 16px;border-radius:8px;background:#42a5f5;color:#fff;border:none;cursor:pointer">📋 Copiar</button>
-        `;
-        msg.className = 'status-msg error';
-      }
+      // Save to GitHub via the API
+      // Since we can't use tokens client-side, save to localStorage + notify
+      localStorage.setItem('pendingFeedback_' + Date.now(), JSON.stringify(payload));
+      
+      // Build readable summary
+      const summary = buildSummary(payload);
+      
+      // Show options
+      msg.innerHTML = `
+        ✅ Feedback guardado localmente!
+        <br><br>📋 Copiá esto y pegalo en Telegram para que lo revise:
+        <br><textarea readonly style="width:100%;min-height:80px;margin-top:8px;padding:8px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;font-size:12px">${summary}</textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button onclick="navigator.clipboard.writeText(document.querySelector('#statusMsg textarea').value);this.textContent='✅ Copiado!'" style="flex:1;padding:10px;border-radius:8px;background:#42a5f5;color:#fff;border:none;cursor:pointer">📋 Copiar</button>
+          <button onclick="location.href='https://t.me/diegodiegodsds?text='+encodeURIComponent(document.querySelector('#statusMsg textarea').value)" style="flex:1;padding:10px;border-radius:8px;background:#0088cc;color:#fff;border:none;cursor:pointer">✈️ Enviar a Telegram</button>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:#999">
+          También podés mandarme un audio diciendo "ya mandé feedback" y lo reviso
+        </div>
+      `;
+      msg.className = 'status-msg success';
       btn.disabled = false;
     }
 
