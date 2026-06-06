@@ -169,6 +169,40 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 95vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    .lightbox .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 32px;
+      color: #fff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.7;
+      z-index: 10000;
+    }
+    .lightbox .close-btn:hover { opacity: 1; }
+
     /* Responsive */
     @media (min-width: 768px) {
       body { padding: 24px; max-width: 900px; margin: 0 auto; }
@@ -194,6 +228,12 @@
       📤 Enviar Feedback
     </button>
     <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="close-btn" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="Vista ampliada">
   </div>
 
   <script>
@@ -267,7 +307,7 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
 
       return `
         <div class="card ${statusClass}" data-id="${img.id}">
-          <img src="${imgUrl}" alt="${img.alt}" loading="lazy"
+          <img src="${imgUrl}" alt="${img.alt}" loading="lazy" onclick="openLightbox('${imgUrl}')"
                onerror="this.parentElement.innerHTML+='<div class=empty-state>⚠️ Imagen no encontrada</div>';this.style.display='none'">
           <div class="card-body">
             <div class="card-title">${img.alt}</div>
@@ -384,6 +424,25 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
       }
       return s;
     }
+
+    // ── Lightbox ──
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(ev) {
+      // Only close if clicking the overlay background or the X button
+      if (!ev || ev.target === document.getElementById('lightbox') || ev.target.tagName === 'BUTTON') {
+        document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('lightboxImg').src = '';
+        document.body.style.overflow = '';
+      }
+    }
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
 
     // ── Helpers ──
     function findImage(id) {
