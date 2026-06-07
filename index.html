@@ -348,7 +348,9 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
     function renderCard(sceneId, img) {
       const imgUrl = `${IMG_BASE}/${img.file}`;
       const fb = feedback[img.id] || {};
-      const statusClass = fb.action === 'approve' ? 'approved'
+      const preapproved = img.status === 'approved';
+      const statusClass = preapproved ? 'approved'
+        : fb.action === 'approve' ? 'approved'
         : fb.action === 'reject' ? 'rejected'
         : fb.action === 'changes' ? 'changes' : '';
 
@@ -357,7 +359,7 @@ const FEEDBACK_RAW = 'https://raw.githubusercontent.com/driosMotion/documental-i
           <img src="${imgUrl}" alt="${img.alt}" loading="lazy" data-lb-src="${imgUrl}"
                onerror="this.parentElement.innerHTML+='<div class=empty-state>⚠️ Imagen no encontrada</div>';this.style.display='none'">
           <div class="card-body">
-            <div class="card-title">${img.alt}</div>
+            <div class="card-title">${img.alt} ${preapproved ? '✅' : ''} ${img.has_video ? '🎥' : ''}</div>
             <div class="actions" data-id="${img.id}">
               <button class="approve ${fb.action === 'approve' ? 'active' : ''}" onclick="setAction('${img.id}','approve')">✅ Aprobar</button>
               <button class="changes ${fb.action === 'changes' ? 'active' : ''}" onclick="setAction('${img.id}','changes')">✏️ Cambios</button>

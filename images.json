@@ -1,16 +1,18 @@
 {
   "project": "Documental Infancia",
+  "project_path": "/Users/pat/Documents/CDT/CdtAI Assets",
+  "naming_convention": "CDT_{Type}_{Description}_OptionX_vNN",
   "scenes": [
     {
       "id": "chars",
       "title": "Personajes (Character Sheets)",
       "description": "Diseños de personajes en estilo pencil + watercolor",
       "images": [
-        {"id": "abe", "file": "abe.jpg", "alt": "Abe - Personaje principal", "status": "approved"},
-        {"id": "tio", "file": "tio_agustin.jpg", "alt": "Tío Agustín - El mentor", "status": "approved"},
-        {"id": "margarita", "file": "margarita.jpg", "alt": "Margarita - Amiga de Abe", "status": "approved"},
-        {"id": "policia", "file": "policia_v2.jpg", "alt": "Policía - Personaje secundario", "status": "approved"},
-        {"id": "abe_street", "file": "abe_street.jpg", "alt": "Abe Callejero - Version de la calle con gorra", "status": "pending"}
+        {"id": "abe", "file": "CDT_CharacterSheet_Abe_OptionA_v01.png", "alt": "Abe - Personaje principal", "status": "approved"},
+        {"id": "abe_street", "file": "CDT_CharacterSheet_AbeStreet_OptionA_v03.png", "alt": "Abe Callejero - Version de la calle con gorra", "status": "approved"},
+        {"id": "tio", "file": "CDT_CharacterSheet_TioAgustin_OptionA_v01.png", "alt": "Tío Agustín - El mentor", "status": "approved"},
+        {"id": "margarita", "file": "CDT_CharacterSheet_Margarita_OptionA_v01.png", "alt": "Margarita - Amiga de Abe", "status": "approved"},
+        {"id": "policia", "file": "CDT_CharacterSheet_Police_OptionA_v04.png", "alt": "Policía - Personaje secundario (v04)", "status": "approved"}
       ]
     },
     {
@@ -18,51 +20,81 @@
       "title": "Locaciones",
       "description": "Escenarios donde transcurre la historia",
       "images": [
-        {"id": "estudio", "file": "Estudio.jpg", "alt": "Estudio / Biblioteca del Tío", "status": "approved"},
-        {"id": "calle_noche", "file": "calle_noche.jpg", "alt": "Calle nocturna - Donde Abe vivió en la calle", "status": "approved"},
-        {"id": "casa_tio_exterior", "file": "casa_tio_exterior.jpg", "alt": "Casa del Tío - Exterior con luz en la ventana", "status": "approved"},
-        {"id": "plaza_banco", "file": "plaza_banco.jpg", "alt": "Banco de la Plaza - El origen", "status": "approved"},
-        {"id": "umbral_puerta", "file": "umbral_puerta.jpg", "alt": "El umbral - Donde durmió en la calle", "status": "approved"}
+        {"id": "estudio", "file": "CDT_Location_Estudio_OptionA_v01.png", "alt": "Estudio / Biblioteca del Tío", "status": "approved"},
+        {"id": "calle_noche", "file": "CDT_Location_CalleNocturna_OptionA_v01.png", "alt": "Calle nocturna - Donde Abe vivió en la calle", "status": "approved"},
+        {"id": "casa_tio", "file": "CDT_Location_CasaTioExterior_OptionA_v01.png", "alt": "Casa del Tío - Exterior con luz en la ventana", "status": "approved"},
+        {"id": "plaza_banco", "file": "CDT_Location_PlazaBanco_OptionA_v01.png", "alt": "Banco de la Plaza - El origen", "status": "approved"},
+        {"id": "umbral", "file": "CDT_Location_UmbralPuerta_OptionA_v01.png", "alt": "El umbral - Donde durmió en la calle", "status": "approved"}
       ]
     },
     {
       "id": "escena1",
       "title": "Escena 1: El Origen",
       "description": "La semilla, el banco de la plaza, la casa con luz",
-      "images": []
+      "images": [
+        {"id": "el_origen", "file": "CDT_Scene_ElOrigen_OptionA_v02.png", "alt": "Escena 1: Abe (callejero) en el banco mirando la casa del Tío", "status": "pending"}
+      ]
     },
     {
       "id": "escena2",
       "title": "Escena 2: La Calle",
       "description": "Piano → calle, dormir en umbral, siluetas de criminales",
-      "images": []
+      "images": [
+        {"id": "la_calle", "file": "CDT_Scene_LaCalle_OptionA_v01.png", "alt": "Escena 2: Abe durmiendo en un umbral en la calle de noche", "status": "approved"}
+      ]
     },
     {
       "id": "escena3",
       "title": "Escena 3: El Tío",
       "description": "Estudio, disciplina, 140 mil copias",
       "images": [
-        {"id": "abe_studying", "file": "AbeStuding.jpg", "alt": "Abe estudiando en el estudio", "status": "pending"},
-        {"id": "tio_telling", "file": "TioTellingAbe.jpg", "alt": "Tío regaña a Abe", "status": "pending"}
+        {"id": "abe_studying", "file": "CDT_Scene_AbeStudying_OptionA_v01.png", "alt": "Abe estudiando en el estudio", "status": "approved", "has_video": true},
+        {"id": "tio_telling", "file": "CDT_Scene_TioTellingAbe_OptionA_v01.png", "alt": "Tío regaña a Abe", "status": "approved", "has_video": true}
       ]
     },
     {
       "id": "escena4",
       "title": "Escena 4: La Fractura",
       "description": "Tío solo de noche, diamante en bruto, flashback",
-      "images": []
+      "images": [
+        {"id": "la_fractura", "file": "CDT_Scene_LaFractura_OptionA_v01.png", "alt": "Escena 4: Tío Agustín solo en el estudio de noche", "status": "approved"}
+      ]
     },
     {
       "id": "escena5",
       "title": "Escena 5: Margarita",
       "description": "Encuentro, mantel, policía, huida",
-      "images": []
+      "images": [
+        {"id": "margarita_meet", "file": "CDT_Scene_Margarita_OptionA_v01.png", "alt": "Escena 5: Abe y Margarita se encuentran frente a la casa", "status": "approved", "has_video": true},
+        {"id": "margarita_under_table", "file": "CDT_Scene_MargaritaUnderTable_OptionA_v03.png", "alt": "Escena 5: Margarita escondida debajo de la mesa (POV desde abajo, solo mantel)", "status": "pending"},
+        {"id": "police_called", "file": "CDT_Scene_PoliceCalled_OptionA_v01.png", "alt": "Escena 5: Tío llama a la policía - patrullero y oficial", "status": "approved"}
+      ]
     },
     {
       "id": "escena6",
       "title": "Escena 6: Todo Vuelve",
       "description": "Reflexión final, péndulo, flor",
-      "images": []
+      "images": [
+        {"id": "todo_vuelve", "file": "CDT_Scene_TodoVuelve_OptionA_v01.png", "alt": "Escena 6: Banco vacío, brote, silueta al atardecer", "status": "approved"},
+        {"id": "abe_in_truck", "file": "CDT_Scene_AbeInTruck_OptionA_v01.png", "alt": "Escena 6: Abe durmiendo en la caja de un camión después de huir", "status": "approved"}
+      ]
+    },
+    {
+      "id": "storyboards",
+      "title": "Storyboards",
+      "description": "Secuencia de planos por escena — 3 a 5 paneles c/u",
+      "images": [
+        {"id": "sb_el_origen", "file": "CDT_Storyboard_ElOrigen_OptionA_v02.png", "alt": "Storyboard: Escena 1 - El Origen (3 paneles, v2)", "status": "pending"},
+        {"id": "sb_la_calle", "file": "CDT_Storyboard_LaCalle_OptionA_v01.png", "alt": "Storyboard: Escena 2 - La Calle (4 paneles)", "status": "approved"},
+        {"id": "sb_abe_studying", "file": "CDT_Storyboard_AbeStudying_OptionA_v01.png", "alt": "Storyboard: Escena 3 - Abe estudiando (3 paneles)", "status": "approved", "has_video": true},
+        {"id": "sb_tio_telling", "file": "CDT_Storyboard_TioTellingAbeToStudy_OptionA_v01.png", "alt": "Storyboard: Escena 3 - Tío regaña a Abe (5 paneles)", "status": "approved", "has_video": true},
+        {"id": "sb_fractura", "file": "CDT_Storyboard_LaFractura_OptionA_v02.png", "alt": "Storyboard: Escena 4 - La Fractura (3 paneles, Tío preocupado)", "status": "pending"},
+        {"id": "sb_marg_meet1", "file": "CDT_Storyboard_MeetMargarita1_OptionA_v01.png", "alt": "Storyboard: Escena 5 - Margarita encuentro 1 (3 paneles)", "status": "approved", "has_video": true},
+        {"id": "sb_marg_meet2", "file": "CDT_Storyboard_MeetMargarita2_OptionA_v01.png", "alt": "Storyboard: Escena 5 - Margarita encuentro 2 (3 paneles)", "status": "approved", "has_video": true},
+        {"id": "sb_marg_table", "file": "CDT_Storyboard_MargaritaUnderTable_OptionA_v02.png", "alt": "Storyboard: Escena 5 - Margarita bajo la mesa (3 paneles, Tío+Abe+descubrimiento)", "status": "pending"},
+        {"id": "sb_police", "file": "CDT_Storyboard_PoliceCalled_OptionA_v02.png", "alt": "Storyboard: Escena 5 - Tío llama a la policía (4 paneles, Abe enojado)", "status": "pending"},
+        {"id": "sb_todo_vuelve", "file": "CDT_Storyboard_TodoVuelve_OptionA_v02.png", "alt": "Storyboard: Escena 6 - Todo Vuelve (4 paneles, sin texto)", "status": "pending"}
+      ]
     }
   ]
 }

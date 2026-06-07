@@ -18,7 +18,7 @@ PORT = 8765
 
 # Paths
 SCRIPT_DIR = Path(__file__).parent.resolve()
-IMAGES_SRC = Path("/Users/pat/Desktop/CdtAI Assets")
+IMAGES_SRC = Path("/Users/pat/Documents/CDT/CdtAI Assets")
 FEEDBACK_FILE = SCRIPT_DIR / "feedback_data.json"
 IMAGES_JSON = SCRIPT_DIR / "images.json"
 HTML_FILE = SCRIPT_DIR / "index.html"
@@ -57,17 +57,24 @@ class FeedbackHandler(http.server.BaseHTTPRequestHandler):
             self.send_json(self.load_feedback())
             return
 
-        # Serve image files from CdtAI Assets
+        # Serve image files from CdtAI Assets or local images/ backup
         if path.startswith("/images/"):
             rel = path[len("/images/"):]
-            # Search in subdirectories
-            for subdir in ["characterSheets", "Location", "Escenas", "Storyboards", "Ref/CDT.C1_JPG_Masters", "."]:
+            # Main source: CDT organized folders
+            for subdir in ["characterSheets", "Location", "Escenas", "Storyboards", "Ref/CDT.C1_JPG_Masters", "other"]:
                 src = IMAGES_SRC / subdir / rel
                 if src.exists() and src.is_file():
                     ext = src.suffix.lower()
                     mime = MIME_TYPES.get(ext, "application/octet-stream")
                     self.serve_file(src, mime)
                     return
+            # Fallback: local images/ folder (web-friendly JPGs)
+            local = SCRIPT_DIR / "images" / rel
+            if local.exists() and local.is_file():
+                ext = local.suffix.lower()
+                mime = MIME_TYPES.get(ext, "application/octet-stream")
+                self.serve_file(local, mime)
+                return
             self.send_error(404, f"Image not found: {rel}")
             return
 
